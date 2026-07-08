@@ -1,0 +1,7 @@
+streamlit==1.56.0
+pandas==2.1.4
+numpy==1.26.4
+pycaret==3.3.2
+scikit-learn==1.4.2
+openai==2.31.0 
+pydantic==2.12.5
