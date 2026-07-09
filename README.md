@@ -1,6 +1,6 @@
 # 📊 Feature Importance Analyzer
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://twoja-aplikacja.onrender.com)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://feature-importance-analyzer-app.onrender.com)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
