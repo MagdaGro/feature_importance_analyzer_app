@@ -96,7 +96,7 @@ streamlit run app.py
 
 ## How It Works
 
-1. Upload a CSV dataset.
+1. Upload a clean, machine-learning-ready CSV dataset.
 2. Select the target variable.
 3. The application detects whether the task is classification or regression.
 4. PyCaret automatically trains and compares multiple machine learning models.
