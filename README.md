@@ -1,5 +1,14 @@
 # 📊 Feature Importance Analyzer
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://twoja-aplikacja.onrender.com)
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
+![PyCaret](https://img.shields.io/badge/PyCaret-3.x-green)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4.1--mini-purple)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+
 An interactive Streamlit application for automatically training machine learning models, identifying the most important predictive features, and generating AI-powered business reports.
 
 The application is designed for non-technical users who want to understand which variables drive model predictions and how these insights can support business decision-making.
