@@ -21,49 +21,76 @@ def build_llm_payload(
                     "model_name": type(best_model).__name__,
                     "model_metrics": best_metrics,
                     "importance_method": fi_dict["method"],
-                    "top_features": fi_df.head(10).to_dict("records"
-                    )
+                    "top_features": fi_df.head(10).to_dict("records")
                 }
 
 
 def generate_report(payload, api_key, max_retries=2):
-                """Generates a business report using the LLM based on the provided payload. """
-                client = OpenAI(api_key=api_key)
-                messages = [
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": json.dumps(payload, default=str)}           
-                    ]
-
-                for attempt in range(max_retries + 1):  
-                    
-                    response = client.chat.completions.create(
+                """Generates a business report using OpenAI structured Outputs. """
+                
+                client = OpenAI(
+                        api_key=api_key,
+                        timeout=60.0
+                                )
+                
+                completion = client.beta.chat.completions.parse(
                         model="gpt-4.1-mini",
-                        messages=messages,
                         temperature=0.2,
-                        )
-                    raw_output = response.choices[0].message.content 
+                        messages=[
+                                {
+                                        "role": "user",
+                                        "content": SYSTEM_PROMPT,
+                                
+                                },
+                                {
+                                        "role": "user",
+                                        "content": json.dumps(payload, default=str),
+                                }
+                        ],
+                        response_format=BusinessReport,
+                )
 
-                    try: 
+                message = completion.choices[0].message
 
-                        parsed = BusinessReport.model_validate_json(raw_output)   
-                        return parsed
+                if message.refusal:
+                        raise ValueError(f"Model refused the request: {message.refusal}")
+                
+                return message.parsed
+            #     messages = [
+            #         {"role": "system", "content": SYSTEM_PROMPT},
+            #         {"role": "user", "content": json.dumps(payload, default=str)}           
+            #         ]
 
-                    except Exception as e:
+            #     for attempt in range(max_retries + 1):  
+                    
+            #         response = client.chat.completions.create(
+            #             model="gpt-4.1-mini",
+            #             messages=messages,
+            #             temperature=0.2,
+            #             )
+            #         raw_output = response.choices[0].message.content 
 
-                        messages.append({"role": "assistant", "content": raw_output})
-                        messages.append({"role": "user",
-                    "content": f"""
-            Your previous output was not valid JSON.
+            #         try: 
 
-            Error:
-            {str(e)}
+            #             parsed = BusinessReport.model_validate_json(raw_output)   
+            #             return parsed
 
-            Please return valid JSON only.
-            """
-            })
-                        if attempt == max_retries:
+            #         except Exception as e:
 
-                            raise ValueError(f"LLM failed after {attempt + 1} attempts.")
+            #             messages.append({"role": "assistant", "content": raw_output})
+            #             messages.append({"role": "user",
+            #         "content": f"""
+            # Your previous output was not valid JSON.
+
+            # Error:
+            # {str(e)}
+
+            # Please return valid JSON only.
+            # """
+            # })
+            #             if attempt == max_retries:
+
+            #                 raise ValueError(f"LLM failed after {attempt + 1} attempts.")
                         
 def validate_report(report: BusinessReport):
                 """Validates the generated business report to ensure it meets the required criteria."""

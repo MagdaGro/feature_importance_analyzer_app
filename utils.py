@@ -20,7 +20,10 @@ def detect_problem_type(y):
     """
     Detects the type of machine learning problem based on the target variable.
     """ 
-    if y.dtype == "object" or y.nunique() < 10:
+    n_unique = y.nunique()
+    ratio_unique = n_unique / len(y)
+
+    if y.dtype == "object" or y.nunique() < 10 and ratio_unique < 0.05:
         return "Classification"
     return "Regression"
 

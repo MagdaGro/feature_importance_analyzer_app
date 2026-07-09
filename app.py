@@ -102,7 +102,8 @@ if uploaded_file is not None:
 
     st.write("Best model:", type(best_model).__name__)
     st.dataframe(leaderboard.head(5))
-        
+
+       
     # FEATURE IMPORTANCE PIPELINE
 
     fi_dict = get_feature_importance(best_model, X, y)

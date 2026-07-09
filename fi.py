@@ -19,6 +19,10 @@ def get_feature_importance(model, X, y):
             if importance.ndim > 1:
                 importance = importance.mean(axis=0)
 
+            # align number of importances with available feature names
+            if len(importance) != len(X.columns):
+                importance = importance[:len(X.columns)]
+
             method = "coef_"
 
         # Fallback: permutation importance
